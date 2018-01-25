@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="css/zui.css">
+	<link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/zui.js"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<ol class="breadcrumb">
+			<li class="active"> 主页</li>
+			<li class="active">子设备</li>
+		</ol>
+		<div class="pull-right head-btn">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#tpl-modal">添加子设备</button>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>设备ID</th>
+					<th width="300" class="text-center">设备名称</th>
+					<th width="140" class="text-center">操作</th>
+				</tr>
+			</thead>
+			<tbody id="device-list">
+			</tbody>
+		</table>
+
+		<div class="modal fade" id="tpl-modal">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+				  <h4 class="modal-title">子设备</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<input type="hidden" class="form-control" id="device-id">
+						<div class="form-group">
+						  <label for="device-name" class="col-sm-2">设备名称</label>
+						  <div class="col-md-8 col-sm-10">
+							<input type="text" class="form-control" id="device-name" placeholder="名字">
+						  </div>
+						</div>
+						<div class="form-group">
+								<label for="device-name" class="col-sm-2">数据模板</label>
+								<div class="col-md-8 col-sm-10">
+										<select class="form-control" id="brand-id">
+										</select>
+								</div>
+						</div>
+						<div class="form-group">
+								<label for="device-name" class="col-sm-2">数据单位</label>
+								<div class="col-md-8 col-sm-10">
+								<input type="text" class="form-control" id="device-unit" placeholder="数据单位">
+								</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				  <button type="button" class="btn btn-primary" id="commit">提交</button>
+				</div>
+			  </div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/data/device.js"></script>
+</body>
+
+</html>

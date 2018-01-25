@@ -15,12 +15,13 @@ create table sxito_user (
 	`user_account` varchar(32) not null,
 	`user_password` varchar(32) not null,
 	`user_alias` varchar(32) not null,
-	`user_eamil` varchar(32),
+	`user_email` varchar(32),
 	`user_phone` varchar(15)
 )ENGINE=InnoDB CHARSET=utf8;
 
 create table sxito_brand (
 	`brand_id` varchar(40) not null  primary key,
+	`brand_type` varchar(64) not null,
 	`brand_name` varchar(64) not null,
 	`brand_metadata` varchar(255)
 )ENGINE=InnoDB CHARSET=utf8;
@@ -36,6 +37,7 @@ create table sxito_device (
 	`admin_id` varchar(40) not null,
 	`brand_id` varchar(40) not null,
 	`device_alias` varchar(64) not null,
+	`device_unit` varchar(10) not null,
 	foreign key (`admin_id`) references sxito_admin(`admin_id`),
 	foreign key (`brand_id`) references sxito_brand(`brand_id`)
 )ENGINE=InnoDB CHARSET=utf8;
@@ -43,10 +45,9 @@ create table sxito_device (
 create table sxito_user_device (
 	`id` varchar(40) not null primary key,
 	`user_id` varchar(40) not null,
-	`device_id` varchar(40) not null,
+	`gateway_id` varchar(40) not null,
 	`device_alias` varchar(64) not null,
-	`device_metadata` varchar(255),
-	foreign key (`device_id`) references sxito_device(`device_id`),
+	foreign key (`gateway_id`) references sxito_gateway(`gateway_id`),
 	foreign key (`user_id`) references sxito_user(`user_id`)
 )ENGINE=InnoDB CHARSET=utf8;
 

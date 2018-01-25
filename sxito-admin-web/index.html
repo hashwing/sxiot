@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>后台管理</title>
+	<link rel="stylesheet" type="text/css" href="css/zui.css">
+	<link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/zui.js"></script>
+</head>
+
+<body>
+<div class="main">
+	<header class="header">
+		<div class="header-left">
+			<div class="sidebar-toggle"><i class="icon icon-bars"></i></div>
+			<div class="logo"><span class="text-primary">随心物联网云管理平台</span></div>
+		</div>
+		<div class="header-user">
+			<div class="item dropdown">
+				<span class="badge label label-dot label-warning"></span>
+				<i class="icon icon-bell-alt"></i>
+			</div>
+			<div class="item dropdown">
+				<span data-toggle="dropdown">
+					<i class="icon icon-user"></i>
+					<span>管理员</span>
+					<span class="caret"></span>
+				</span>
+				<ul class="dropdown-menu pull-right">
+		          	<li>
+		            	<a href="#">修改资料</a>
+		          	</li>
+          <li class="divider"></li>
+          <li>
+            <a href="#">注销</a>
+          </li>
+        </ul>
+			</div>
+		</div>
+	</header>
+	<aside class="sidebar">
+		<div class="sidebar-menu">
+			<div class="sidebar-first item select-list active" style="margin-left: 0;margin-right:0;">
+				<a href="#">
+					<i class="icon icon-dashboard"></i>
+					<span>总览</span>
+				</a>
+			</div>
+			<div class="item select-list">
+				<a href="#">
+					<i class="icon icon-bell-alt"></i>
+					<span>消息中心</span>
+				</a>
+			</div>
+			<div class="item select-list">
+				<a href="template.html" target="rightFrame">
+					<i class="icon icon-file-code"></i>
+					<span>数据模板</span>
+				</a>
+			</div>
+			<div class="item vertical">
+				<a href="#">
+					<i class="icon icon-cogs"></i>
+					<span>设备管理</span>
+					<span class="arrow"></span>
+				</a>
+				<div class="vertical-menu">
+						<a href="gateway.html" target="rightFrame" class="select-menu">网关</a>
+						<a href="device.html" target="rightFrame" class="select-menu">子设备</a>
+				</div>
+			</div>
+			<div class="item select-list">
+				<a href="#">
+					<i class="icon icon-user"></i>
+					<span>用户中心</span>
+				</a>
+			</div>
+		</div>
+	</aside>
+	<div class="main-content">
+		<iframe  width="100%" height="600" border="0" frameborder="0" src="main.html" name="rightFrame" id="rightFrame">  
+		</iframe> 
+	</div>
+</div>
+	<script type="text/javascript" src="js/admin.js"></script>
+</body>
+</html>

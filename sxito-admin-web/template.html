@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" type="text/css" href="css/zui.css">
+	<link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/zui.js"></script>
+</head>
+
+<body>
+	<div class="wrapper">
+		<ol class="breadcrumb">
+			<li class="active"> 主页</li>
+			<li class="active">数据模板</li>
+		</ol>
+		<div class="pull-right head-btn">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#tpl-modal">添加数据模板</button>
+		</div>
+
+		<table class="table">
+			<thead>
+				<tr>
+					<th>模板名称</th>
+					<th width="200" class="text-center">模板标识</th>
+					<th width="140" class="text-center">操作</th>
+				</tr>
+			</thead>
+			<tbody id="tpl-list">
+				<tr>
+					<td>这是栏目名称</td>
+					<td class="text-center">switch</td>
+					<td class="text-center">
+						<button type="button" class="btn btn-sm btn-success">
+							<i class="icon-edit"></i> 编辑</button>
+						<button type="button" class="btn btn-sm btn-danger">
+							<i class="icon-trash"></i> 删除</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<div class="modal fade" id="tpl-modal">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+				  <h4 class="modal-title">数据模板</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal">
+						<input type="hidden" class="form-control" id="tpl-id">
+						<div class="form-group">
+						  <label for="tpl-name" class="col-sm-2">名称</label>
+						  <div class="col-md-8 col-sm-10">
+							<input type="text" class="form-control" id="tpl-name" placeholder="名字">
+						  </div>
+						</div>
+						<div class="form-group">
+						  <label for="tpl-mark" class="col-sm-2">标识</label>
+						  <div class="col-md-8 col-sm-10">
+							<input type="text" class="form-control" id="tpl-mark" placeholder="标识">
+						  </div>
+						</div>
+						<div class="form-group">
+							<label for="tpl-metadata" class="col-sm-2">元数据</label>
+							<div class="col-md-8 col-sm-10">
+								<textarea class="form-control" id="tpl-metadata" rows="3" placeholder="元数据"></textarea>
+							</div>
+						  </div>
+					  </form>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				  <button type="button" class="btn btn-primary" id="commit">提交</button>
+				</div>
+			  </div>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="js/data/template.js"></script>
+</body>
+
+</html>

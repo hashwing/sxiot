@@ -9,6 +9,7 @@ import (
 
 func CreateBrand(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("brand_name")
+	typef := r.FormValue("brand_type")
 	metadata := r.FormValue("brand_metadata")
 	if name == ""{
 		w.WriteHeader(400)
@@ -18,6 +19,7 @@ func CreateBrand(w http.ResponseWriter, r *http.Request) {
 	brand :=&db.DeviceBrand{
 		ID:id,
 		Name:name,
+		Type:typef,
 		Metadata:metadata,
 	}
 	err:=db.AddBrand(brand)
@@ -31,6 +33,7 @@ func CreateBrand(w http.ResponseWriter, r *http.Request) {
 func UpdateBrand(w http.ResponseWriter, r *http.Request) {
 	id :=r.FormValue("brand_id")
 	name := r.FormValue("brand_name")
+	typef := r.FormValue("brand_type")
 	metadata := r.FormValue("brand_metadata")
 	if name == ""{
 		w.WriteHeader(400)
@@ -39,6 +42,7 @@ func UpdateBrand(w http.ResponseWriter, r *http.Request) {
 	brand :=&db.DeviceBrand{
 		ID:id,
 		Name:name,
+		Type:typef,
 		Metadata:metadata,
 	}
 	err:=db.UpdateBrand(brand)

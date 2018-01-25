@@ -20,7 +20,7 @@ type AdminUser struct {
 }
 
 type PersonUser struct {
-	UserID       int    `xorm:"user_id" json:"user_id"`
+	UserID       string    `xorm:"user_id" json:"user_id"`
 	UserAccount  string `xorm:"user_account" json:"user_account"`
 	UserPassword string `xorm:"user_password" json:"-"`
 	UserAlias    string `xorm:"user_alias" json:"user_alias"`
@@ -31,7 +31,8 @@ type PersonUser struct {
 type DeviceBrand struct {
 	ID       string    `xorm:"brand_id" json:"brand_id"`
 	Name   string `xorm:"brand_name" json:"brand_name"`
-	Metadata   string `xorm:"brand_metadata" json:"brand_metadta"`
+	Type string `xorm:"brand_type" json:"brand_type"`
+	Metadata   string `xorm:"brand_metadata" json:"brand_metadata"`
 }
 
 type DeviceGateway struct {
@@ -45,14 +46,14 @@ type Device struct {
 	AdminID string `xorm:"admin_id" json:"admin_id"`
 	BrandID string    `xorm:"brand_id" json:"brand_id"`
 	Name  string `xorm:"device_alias" json:"device_alias"`
+	Unit  string `xorm:"device_unit" json:"device_unit"`
 }
 
 type PersonDevice struct {
 	ID string  `xorm:"id" json:"id"`
 	UserID    string    `xorm:"user_id" json:"person_device_user"`
-	DeviceID      string    `xorm:"device_id" json:"devcie_id"`
-	Alias   string `xorm:"devie_alias" json:"device_alias"`
-	Expression string `xorm:"device_expression" json:"device_expression"`
+	DeviceID      string    `xorm:"gateway_id" json:"devcie_id"`
+	Alias   string `xorm:"device_alias" json:"device_alias"`
 }
 
 type Message struct {

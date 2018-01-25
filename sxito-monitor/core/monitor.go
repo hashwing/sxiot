@@ -72,8 +72,19 @@ func GetNetInfo() error {
 		return err
 	}
 	t := time.Now().Unix()
+	logs.Info(len(data))
 	if preNet.Time != 0 {
 		for i, value := range data {
+			iface, err := net.InterfaceByName(value.Name)
+			if err != nil {
+				continue
+			}
+			if iface.Flags&net.FlagLoopback == net.FlagLoopback {
+				continue
+			}
+			if iface.Flags&net.FlagUp == 0 {
+				continue
+			}
 			tag := make(map[string]string)
 			tag["host"] = host
 			field := make(map[string]interface{})
@@ -81,7 +92,9 @@ func GetNetInfo() error {
 			field["SentPerSec"] = int64(value.BytesSent-preNet.Data[i].BytesSent) / (t - preNet.Time)
 			tag["core"] = strings.Replace(value.Name, " ", "", -1)
 			err=EndPointAdd("network", tag, field)
-			return err
+			if err!=nil{
+				return err
+			}
 		}
 	}
 	preNet.Data = data
@@ -109,7 +122,9 @@ func GetDiskInfo() error {
 		field["FreeSpace"] = int64(data.Free)
 		tag["core"] = strings.Replace(value.Mountpoint, " ", "", -1)
 		err=EndPointAdd("disk", tag, field)
-		return err
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }

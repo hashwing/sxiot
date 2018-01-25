@@ -1,4 +1,4 @@
-package platform
+package app
 
 import (
 	"net/http"
@@ -8,23 +8,22 @@ import (
 	"github.com/hashwing/sxito/sxito-core/db"
 )
 func CreateDevice(w http.ResponseWriter, r *http.Request) {
-	brandID :=r.FormValue("brand_id")
-	name := r.FormValue("device_name")
-	unit := r.FormValue("device_unit")
-	if name == ""{
+	gid :=r.FormValue("gateway_id")
+	alias := r.FormValue("device_alias")
+	if alias == ""|| gid ==""{
 		w.WriteHeader(400)
 		return
 	}
 	claims := context.Get(r, "Claims").(*MyCustomClaims)
 	id := uuid.NewV4().String()
-	device :=&db.Device{
+	device :=&db.PersonDevice{
 		ID:id,
-		AdminID:claims.UserID,
-		BrandID:brandID,
-		Name:name,
-		Unit:unit,
+		UserID:claims.UserID,
+		DeviceID:gid,
+		Alias:alias,
 	}
-	err:=db.AddDevice(device)
+	logs.Info(claims.UserID)
+	err:=db.AddPersonDevice(device)
 	if err!=nil{
 		logs.Error(err)
 		w.WriteHeader(500)
@@ -34,23 +33,21 @@ func CreateDevice(w http.ResponseWriter, r *http.Request) {
 }
 
 func UpdateDevice(w http.ResponseWriter, r *http.Request){
-	id :=r.FormValue("device_id")
-	brandID :=r.FormValue("brand_id")
-	name := r.FormValue("device_name")
-	unit := r.FormValue("device_unit")
-	if name == ""|| id==""{
+	id :=r.FormValue("id")
+	gid :=r.FormValue("gateway_id")
+	alias := r.FormValue("device_alias")
+	if alias == ""|| id==""|| gid==""{
 		w.WriteHeader(400)
 		return
 	}
 	claims := context.Get(r, "Claims").(*MyCustomClaims)
-	device :=&db.Device{
+	device :=&db.PersonDevice{
 		ID:id,
-		AdminID:claims.UserID,
-		BrandID:brandID,
-		Name:name,
-		Unit:unit,
+		UserID:claims.UserID,
+		DeviceID:gid,
+		Alias:alias,
 	}
-	err:=db.UpdateDevice(device)
+	err:=db.UpdatePersonDevice(device)
 	if err!=nil{
 		logs.Error(err)
 		w.WriteHeader(500)
@@ -59,9 +56,9 @@ func UpdateDevice(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(204)
 }
 
-func FindDevcies(w http.ResponseWriter, r *http.Request){
+func FindDevices(w http.ResponseWriter, r *http.Request){
 	claims := context.Get(r, "Claims").(*MyCustomClaims)
-	devices,err:=db.FindDevices(claims.UserID)
+	devices,err:=db.FindPersonDevices(claims.UserID)
 	if err!=nil{
 		logs.Error(err)
 		w.WriteHeader(500)
@@ -90,7 +87,7 @@ func DelDevice(w http.ResponseWriter, r *http.Request){
 		w.WriteHeader(400)
 		return
 	}
-	err:=db.DelDevice(id)
+	err:=db.DelPersonDevice(id)
 	if err!=nil{
 		w.WriteHeader(500)
 		return
