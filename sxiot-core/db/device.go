@@ -22,7 +22,7 @@ func GetDevice(deviceID string)(*Device,error){
 
 
 func UpdateDevice(device *Device)error{
-	_,err:=MysqlDB.Table("sxiot_device").Where("device_id=?",device.ID).Update(&device)
+	_,err:=MysqlDB.Table("sxiot_device").Where("device_id=?",device.ID).Update(device)
 	return err
 }
 

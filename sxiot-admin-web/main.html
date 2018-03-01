@@ -1,20 +1,139 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<link rel="stylesheet" type="text/css" href="css/zui.css">
 	<link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="js/zui.js"></script>
+	<script src="js/zui.chart.min.js"></script>
 </head>
+
 <body>
 	<div class="wrapper">
-			<ol class="breadcrumb">
-  				<li><a href="#"><i class="icon icon-home"></i> 主页</a></li>
-			</ol>
-			<div class="panel">
-				<div class="panel-heading"><h5>总览</h5></div>
-				<div class="panel-body">
+		<ol class="breadcrumb">
+			<li>
+				<a href="#">
+					<i class="icon icon-home"></i> 主页</a>
+			</li>
+		</ol>
+		<div class="content-body">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<div class="info-box bg-info">
+							<div class="info-box-icon">
+								<i class="icon icon-hdd"></i>
+							</div>
+							<div class="info-box-content">
+								<span class="info-box-text">设备数/在线数</span>
+								<span class="info-box-number">320/20
+									<small>个</small>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<div class="info-box bg-primary">
+							<div class="info-box-icon">
+								<i class="icon icon-user"></i>
+							</div>
+							<div class="info-box-content">
+								<span class="info-box-text">用户总量/在线用户</span>
+								<span class="info-box-number">90/20
+									<small>个</small>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<div class="info-box bg-warning">
+							<div class="info-box-icon">
+								<i class="icon icon-server"></i>
+							</div>
+							<div class="info-box-content">
+								<span class="info-box-text">MQTT服务端</span>
+								<span class="info-box-number">3
+									<small>个</small>
+								</span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3 col-sm-6 col-xs-12">
+						<div class="info-box bg-danger">
+							<div class="info-box-icon">
+								<i class="icon icon-dot-circle"></i>
+							</div>
+							<div class="info-box-content">
+								<span class="info-box-text">数据点总量</span>
+								<span class="info-box-number">18953
+									<small>个</small>
+								</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="panel-title">设备活跃动态</div>
+							</div>
+							<div class="panel-body">
+								<canvas id="device-chart" width="400" height="300"></canvas>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6">
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="panel-title">用户活跃动态</div>
+							</div>
+							<div class="panel-body">
+								<canvas id="user-chart" width="400" height="300"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<div class="panel">
+							<div class="panel-heading">
+								<div class="panel-title">服务器信息</div>
+							</div>
+							<div class="panel-body">
+								<table class="table table-info">
+									<tr>
+										<td>操作系统</td>
+										<td>Windows</td>
+									</tr>
+									<tr>
+										<td>运行环境</td>
+										<td>nginx/1.4.6</td>
+									</tr>
+									<tr>
+										<td>PHP版本</td>
+										<td>5.5.9-1ubuntu4.21</td>
+									</tr>
+									<tr>
+										<td>MYSQL版本</td>
+										<td>10.1.11-MariaDB-log</td>
+									</tr>
+									<tr>
+										<td>上传限制</td>
+										<td>20M</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
+		</div>
 	</div>
 </body>
+
+<script src="js/main.js"></script>
+
 </html>

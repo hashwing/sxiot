@@ -15,74 +15,65 @@
 	<div class="wrapper">
 		<ol class="breadcrumb">
 			<li class="active"> 主页</li>
-			<li class="active">数据模板</li>
+			<li class="active">管理员列表</li>
 		</ol>
 		<div class="pull-right head-btn">
-			<button class="btn btn-primary" data-toggle="modal" data-target="#tpl-modal">添加数据模板</button>
+			<button class="btn btn-primary" id="user-add" data-toggle="modal" data-target="#user-modal">添加</button>
 		</div>
 
 		<table class="table">
 			<thead>
 				<tr>
-					<th>模板名称</th>
-					<th width="200" class="text-center">模板标识</th>
+                    <th>ID</th>
+                    <th width="300">昵称</th>
+					<th width="300" class="text-center">账号</th>
 					<th width="140" class="text-center">操作</th>
 				</tr>
 			</thead>
-			<tbody id="tpl-list">
-				<tr>
-					<td>这是栏目名称</td>
-					<td class="text-center">switch</td>
-					<td class="text-center">
-						<button type="button" class="btn btn-sm btn-success">
-							<i class="icon-edit"></i> 编辑</button>
-						<button type="button" class="btn btn-sm btn-danger">
-							<i class="icon-trash"></i> 删除</button>
-					</td>
-				</tr>
+			<tbody id="user-list">
 			</tbody>
 		</table>
 
-		<div class="modal fade" id="tpl-modal">
+		<div class="modal fade" id="user-modal">
 			<div class="modal-dialog">
 			  <div class="modal-content">
 				<div class="modal-header">
 				  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
-				  <h4 class="modal-title">数据模板</h4>
+				  <h4 class="modal-title">管理员</h4>
 				</div>
 				<div class="modal-body">
 					<form class="form-horizontal">
-						<input type="hidden" class="form-control" id="tpl-id">
+                        <input type="hidden" class="form-control" id="user-id">
+                        <div class="form-group">
+                            <label for="user-alias" class="col-sm-2">昵称</label>
+                            <div class="col-md-8 col-sm-10">
+                              <input type="text" class="form-control" id="user-alias" placeholder="昵称">
+                            </div>
+                          </div>
 						<div class="form-group">
-						  <label for="tpl-name" class="col-sm-2">名称</label>
+						  <label for="user-account" class="col-sm-2">账号</label>
 						  <div class="col-md-8 col-sm-10">
-							<input type="text" class="form-control" id="tpl-name" placeholder="名字">
+							<input type="text" class="form-control" id="user-account" placeholder="账号">
 						  </div>
 						</div>
 						<div class="form-group">
-						  <label for="tpl-mark" class="col-sm-2">标识</label>
+						  <label for="user-password" class="col-sm-2">密码</label>
 						  <div class="col-md-8 col-sm-10">
-							<input type="text" class="form-control" id="tpl-mark" placeholder="标识">
+							<input type="password" class="form-control" id="user-password" placeholder="密码">
 						  </div>
 						</div>
-						<div class="form-group">
-							<label for="tpl-metadata" class="col-sm-2">元数据</label>
-							<div class="col-md-8 col-sm-10">
-								<textarea class="form-control" id="tpl-metadata" rows="3" placeholder="元数据"></textarea>
-							</div>
-						  </div>
 					  </form>
 				</div>
 				<div class="modal-footer">
 				  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				  <button type="button" class="btn btn-primary" id="tpl-commit">提交</button>
+				  <button type="button" class="btn btn-primary" id="user-commit">提交</button>
 				</div>
 			  </div>
 			</div>
 		</div>
 
 		<script type="text/javascript" src="js/common.js"></script>
-		<script type="text/javascript" src="js/data/template.js"></script>
+		<script type="text/javascript" src="js/data/user.js"></script>
 </body>
 
 </html>

@@ -2,39 +2,46 @@
 <html>
 
 <head>
-	<link rel="stylesheet" type="text/css" href="css/zui.css">
-	<link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/zui.css">
+  <link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
-    <script type="text/javascript" src="lib/jquery/jquery.cookie.js"></script>
-	<script type="text/javascript" src="js/zui.js"></script>
+  <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+  <script type="text/javascript" src="lib/jquery/jquery.cookie.js"></script>
+  <script type="text/javascript" src="js/zui.js"></script>
+  <style>
+  body{
+    background:url('img/login.jpg') no-repeat;
+    background-size: cover;
+  }
+  </style>
 </head>
 
-<body>
-	<div class="wrapper">
-            <form class="form-horizontal">
-                    <div class="form-group">
-                      <label for="account" class="col-sm-2">账号</label>
-                      <div class="col-md-6 col-sm-10">
-                        <input type="text" class="form-control" id="account" placeholder="电子邮件/手机号/用户名">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="pwd" class="col-sm-2">密码</label>
-                      <div class="col-md-6 col-sm-10">
-                        <input type="password" class="form-control" id="pwd" placeholder="密码">
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <div class="col-sm-offset-2 col-sm-10">
-                        <button type="button" class="btn btn-default" id="commit">登录</button>
-                      </div>
-                    </div>
-                  </form>
-    </div>
 
-	<script type="text/javascript" src="js/data/login.js"></script>
+<body>
+  <div class="page page-login text-center">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="logo">
+          <a href="#">随心物联网云管理平台</a>
+        </div>
+        <form action="#">
+          <div class="form-group">
+            <input type="text" class="form-control" id="account" placeholder="帐号">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="pwd" placeholder="密码">
+          </div>
+          <button type="button" id="commit" class="btn btn-lg btn-primary btn-block">登录</button>
+        </form>
+      </div>
+    </div>
+    <footer class="page-copyright page-copyright-inverse">
+      <p>© 2018.ZQU SXIOT TEAM All RIGHT RESERVED.</p>
+    </footer>
+  </div>
+
+  <script type="text/javascript" src="js/data/login.js"></script>
 </body>
 
 </html>

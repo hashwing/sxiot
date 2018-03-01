@@ -263,3 +263,120 @@ input.text{
 .head-btn{
     margin: 10px;
 }
+
+
+/* info box */
+
+.info-box {
+    display: block;
+    min-height: 90px;
+    width: 100%;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.info-box-icon {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 4px;
+    display: block;
+    float: left;
+    height: 90px;
+    width: 90px;
+    text-align: center;
+    font-size: 45px;
+    line-height: 90px;
+}
+
+.info-box-icon .icon {
+    text-align: center;
+    font-size: 45px;
+}
+
+.info-box-content {
+    padding: 22px 10px;
+    margin-left: 90px;
+}
+
+.info-box-text {
+    display: block;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.info-box-number {
+    display: block;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+
+/* login  */
+
+.page-login {
+    padding: 100px;
+    opacity: 0.8;
+}
+
+.page-login .panel {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.page-login .panel-body {
+    padding: 50px 40px 40px;
+}
+
+.page-login .logo {
+    font-size: 20px;
+    text-align: center;
+}
+
+.page-login .logo img {
+    width: 36px;
+    height: 36px;
+}
+
+.page-login .logo a {
+    text-decoration: none;
+    margin-top: 8px;
+    font-size: 28px;
+    color: #37474f;
+    text-shadow: rgba(0, 0, 0, .15) 0 0 1px;
+}
+
+.page-login form {
+    margin-top: 45px;
+    color: #76838f;
+}
+
+.page-login form .form-group {
+    margin: 20px 0 40px 0;
+}
+
+.page-login form .form-control {
+    height: 36px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.page-login form .btn-lg {
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+@media (min-width: 767px) {
+    .sidebar-toggle {
+        display: none;
+    }
+}
+
+.page-copyright{
+    margin: 20px;
+}

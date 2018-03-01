@@ -40,7 +40,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 		return
 	}
-	expireToken := time.Now().Add(time.Hour * 24).Unix()
+	expireToken := time.Now().Add(time.Hour * 24*30).Unix()
 	claims := MyCustomClaims{
 		user.UserID,
 		jwt.StandardClaims{

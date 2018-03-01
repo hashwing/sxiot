@@ -9,6 +9,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
+	<script type="text/javascript" src="lib/jquery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="js/zui.js"></script>
 </head>
 
@@ -27,16 +28,12 @@
 			<div class="item dropdown">
 				<span data-toggle="dropdown">
 					<i class="icon icon-user"></i>
-					<span>管理员</span>
+					<span id="user-alias">游客</span>
 					<span class="caret"></span>
 				</span>
 				<ul class="dropdown-menu pull-right">
-		          	<li>
-		            	<a href="#">修改资料</a>
-		          	</li>
-          <li class="divider"></li>
           <li>
-            <a href="#">注销</a>
+            <a href="javascript:logout();">注销</a>
           </li>
         </ul>
 			</div>
@@ -45,7 +42,7 @@
 	<aside class="sidebar">
 		<div class="sidebar-menu">
 			<div class="sidebar-first item select-list active" style="margin-left: 0;margin-right:0;">
-				<a href="#">
+				<a href="main.html" target="rightFrame">
 					<i class="icon icon-dashboard"></i>
 					<span>总览</span>
 				</a>
@@ -74,9 +71,9 @@
 				</div>
 			</div>
 			<div class="item select-list">
-				<a href="#">
+				<a href="user.html" target="rightFrame">
 					<i class="icon icon-user"></i>
-					<span>用户中心</span>
+					<span>管理员</span>
 				</a>
 			</div>
 		</div>
@@ -87,5 +84,17 @@
 	</div>
 </div>
 	<script type="text/javascript" src="js/admin.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" src="js/data/login-user.js"></script>
+	<script>
+		if ($.cookie("Auth")==""){
+				//$(location).attr("href","login.html")
+		}
+		function logout(){
+			$.cookie("Auth","",{path:'/'})
+            $.cookie("Auth","")
+            $(location).attr("href","login.html")
+		}
+	</script>
 </body>
 </html>

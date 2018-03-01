@@ -38,7 +38,6 @@ func UpdateGateway(w http.ResponseWriter, r *http.Request) {
 	gateway :=&db.DeviceGateway{
 		ID:id,
 		Name:name,
-		AdminID:id,
 	}
 	err:=db.UpdateGateway(gateway)
 	if err!=nil{

@@ -12,13 +12,17 @@ import (
 func NewRouter(root *mux.Router) {
 	apiRoute := root.PathPrefix("/api").Subrouter()
 	apiRoute.HandleFunc("/login", platform.Login)
-	apiRoute.Handle("/user", apiHandler(platform.GetCurrentUser))
+	userRoute:=apiRoute.PathPrefix("/user").Subrouter()
+	userRoute.Handle("/get", apiHandler(platform.GetCurrentUser))
+	userRoute.Handle("/find", apiHandler(platform.FindUsers))
+	userRoute.Handle("/create", apiHandler(platform.CreateUser))
+	userRoute.Handle("/del", apiHandler(platform.DelUser))
 	brandRoute:=apiRoute.PathPrefix("/device/brand").Subrouter()
-	brandRoute.HandleFunc("/find",  apiHandler(platform.FindBrands))
-	brandRoute.HandleFunc("/get",  apiHandler(platform.GetBrand))
-	brandRoute.HandleFunc("/create",apiHandler(platform.CreateBrand))
-	brandRoute.HandleFunc("/update", apiHandler(platform.UpdateBrand))
-	brandRoute.HandleFunc("/delete", apiHandler(platform.DelBrand))
+	brandRoute.Handle("/find",  apiHandler(platform.FindBrands))
+	brandRoute.Handle("/get",  apiHandler(platform.GetBrand))
+	brandRoute.Handle("/create",apiHandler(platform.CreateBrand))
+	brandRoute.Handle("/update", apiHandler(platform.UpdateBrand))
+	brandRoute.Handle("/delete", apiHandler(platform.DelBrand))
 	gatewayRoute:=apiRoute.PathPrefix("/device/gateway").Subrouter()
 	gatewayRoute.Handle("/find",  apiHandler(platform.FindGateways))
 	gatewayRoute.Handle("/get",  apiHandler(platform.GetGateway))
@@ -34,12 +38,18 @@ func NewRouter(root *mux.Router) {
 	//
 	appRoute:=apiRoute.PathPrefix("/app").Subrouter()
 	appRoute.HandleFunc("/login", app.Login)
+	appRoute.HandleFunc("/son", app.GetSonDevices)
 	appRoute.HandleFunc("/reg", app.AddUser)
+	appRoute.HandleFunc("/template", platform.FindBrands)
 	appDeviceRoute:=appRoute.PathPrefix("/device").Subrouter()
 	appDeviceRoute.Handle("/find",  appHandler(app.FindDevices))
+	appDeviceRoute.Handle("/all",  appHandler(app.GetAllDevices))
 	appDeviceRoute.Handle("/add",  appHandler(app.CreateDevice))
 	appDeviceRoute.Handle("/del",  appHandler(app.DelDevice))
 	appDeviceRoute.Handle("/update",  appHandler(app.UpdateDevice))
+	appSonRoute:=appRoute.PathPrefix("/son").Subrouter()
+	appSonRoute.Handle("/find",  appHandler(app.GetSonDevices))
+	appSonRoute.Handle("/update",  appHandler(app.UpdateSonDevice))
 }
 
 type apiHandler func(http.ResponseWriter, *http.Request)
@@ -50,6 +60,7 @@ func (fn apiHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	r.Header.Set("Access-Control-Allow-Headers", "Auth");
 	err := platform.Auth(w, r)
 	if err != nil {
+		fmt.Println(err)
 		w.WriteHeader(http.StatusForbidden)
 		return
 	}

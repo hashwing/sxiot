@@ -16,6 +16,7 @@ type SxiotConfig struct {
 	Mysql Mysql `ini:"mysql"`
 	Platform PlatformConfig `ini:"platform"`
 	Monitor Monitor `ini:"monitor"`
+	MQTT Emqtt `ini:"emqtt"`
 }
 
 func NewCommonConfig() error {

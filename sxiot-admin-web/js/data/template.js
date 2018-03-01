@@ -1,60 +1,94 @@
 
 tpl_list()
 function tpl_list(){
-    $.ajax({
-        type: "get",
-        url: "api/device/brand/find",
-        data: {},
-        beforeSend: function() {},
-        success: function(msg) {
-            var obj= JSON.parse(msg)
-            $('#tpl-list').empty()
-            $.each(obj,function(i,val){
-                var list= `<tr>
-                    <td>`+val.brand_name+`</td>
-                    <td class="text-center">`+val.brand_type+`</td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-sm btn-success">
-                            <i class="icon-edit"></i> 编辑</button>
-                        <button type="button" class="btn btn-sm btn-danger">
-                            <i class="icon-trash"></i> 删除</button>
-                    </td>
-                </tr>`
-                $('#tpl-list').append(list)
-            });   
-        },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-        }
-    });
-
-    
+    var success =function(obj) {
+        $('#tpl-list').empty()
+        $.each(obj,function(i,val){
+            var list= `<tr>
+                <td>`+val.brand_name+`</td>
+                <td class="text-center">`+val.brand_type+`</td>
+                <td class="text-center">
+                    <button type="button" onclick="get_tpl('`+val.brand_id+`')" class="btn btn-sm btn-success">
+                        <i class="icon-edit"></i> 编辑</button>
+                    <button type="button" onclick="del_tpl('`+val.brand_id+`')" class="btn btn-sm btn-danger">
+                        <i class="icon-trash"></i> 删除</button>
+                </td>
+            </tr>`
+            $('#tpl-list').append(list)
+        });   
+    }
+    AjaxReq(
+        "get",
+        "api/device/brand/find",
+        {},
+        function() {},
+        success,
+        ReqErr
+    )
 }
 
-$('#commit').click(function(){
-    if ($('#tpl-id').val()==""){
-        add_tpl()
-    }
+$('#tpl-commit').click(function(){
+    add_tpl()
 });
 
 function add_tpl(){
+    var id=$('#tpl-id').val()
     var name=$('#tpl-name').val()
     var type=$('#tpl-mark').val()
     var metadata=$('#tpl-metadata').val()
-    $.ajax({
-        type: "post",
-        url: "api/device/brand/create",
-        data: {brand_name:name,brand_type:type,brand_metadata:metadata},
-        beforeSend: function() {},
-        success: function(msg) {
-            new $.zui.Messager("添加成功", {
-                type: 'success' 
-                }).show();  
-                tpl_list()   
+    var url="api/device/brand/create"
+    if (id!=""){
+        url="api/device/brand/update"
+    }
+    AjaxReq(
+        "post",
+        url,
+        {brand_id:id,brand_name:name,brand_type:type,brand_metadata:metadata},
+        function() {},
+        function() {
+            tpl_list()
+            clean_tpl()
+            $("#tpl-modal").modal("hide")
+            ReqSuccess()
         },
-        error: function(XMLHttpRequest, textStatus, errorThrown) {
-            new $.zui.Messager("添加失败", {
-                type: 'danger' 
-                }).show();
-        }
-    });
+        ReqErr
+    )
+}
+
+function get_tpl(id){
+    AjaxReq(
+        "get",
+        "api/device/brand/get",
+        {brand_id:id},
+        function() {},
+        function(msg) {
+            $('#tpl-id').val(msg.brand_id)
+            $('#tpl-name').val(msg.brand_name)
+            $('#tpl-mark').val(msg.brand_type)
+            $('#tpl-metadata').val(msg.brand_metadata)
+            $("#tpl-modal").modal("show")
+        },
+        ReqErr
+    )
+}
+
+function del_tpl(id){
+    AjaxReq(
+        "get",
+        "api/device/brand/delete",
+        {brand_id:id},
+        function() {},
+        function() {
+            tpl_list()
+            ReqSuccess()
+        },
+        ReqErr
+    )
+}
+
+function clean_tpl(){
+    $('#tpl-id').val("")
+    $('#tpl-name').val("")
+    $('#tpl-mark').val("")
+    $('#tpl-metadata').val("")
 }

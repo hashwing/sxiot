@@ -54,6 +54,7 @@ type PersonDevice struct {
 	UserID    string    `xorm:"user_id" json:"person_device_user"`
 	DeviceID      string    `xorm:"gateway_id" json:"device_id"`
 	Alias   string `xorm:"device_alias" json:"device_alias"`
+	Status bool `xorm:"-" json:"device_status"`
 }
 
 type Message struct {

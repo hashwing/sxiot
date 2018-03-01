@@ -6,6 +6,7 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/gorilla/context"
 	"github.com/hashwing/sxiot/sxiot-core/db"
+	"github.com/hashwing/sxiot/sxiot-core/emqtt"
 )
 func CreateDevice(w http.ResponseWriter, r *http.Request) {
 	gid :=r.FormValue("gateway_id")
@@ -63,6 +64,14 @@ func FindDevices(w http.ResponseWriter, r *http.Request){
 		logs.Error(err)
 		w.WriteHeader(500)
 		return
+	}
+	for i,v:=range devices{
+		res,err:=emqtt.GetClientStatus(v.DeviceID)
+		if err!=nil{
+			w.WriteHeader(500)
+			return
+		}
+		devices[i].Status=res
 	}
 	w.Write(JsonMsg(devices))
 }
