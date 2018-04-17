@@ -11,6 +11,11 @@
 	<script type="text/javascript" src="lib/jquery/jquery.js"></script>
 	<script type="text/javascript" src="lib/jquery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="js/zui.js"></script>
+	<style>
+		body{
+			overflow-y:hidden;
+		}
+	</style>
 </head>
 
 <body>
@@ -41,16 +46,22 @@
 	</header>
 	<aside class="sidebar">
 		<div class="sidebar-menu">
-			<div class="sidebar-first item select-list active" style="margin-left: 0;margin-right:0;">
+			<div class="sidebar-first item select-list active">
 				<a href="main.html" target="rightFrame">
 					<i class="icon icon-dashboard"></i>
 					<span>总览</span>
 				</a>
 			</div>
+			<div class="item select-list" id="host-monitor">
+				<a href="monitor.html" target="rightFrame">
+					<i class="icon icon-area-chart"></i>
+					<span>主机监控</span>
+				</a>
+			</div>
 			<div class="item select-list">
-				<a href="#">
+				<a href="message.html" target="rightFrame">
 					<i class="icon icon-bell-alt"></i>
-					<span>消息中心</span>
+					<span>消息推送</span>
 				</a>
 			</div>
 			<div class="item select-list">
@@ -79,7 +90,7 @@
 		</div>
 	</aside>
 	<div class="main-content">
-		<iframe  width="100%" height="600" border="0" frameborder="0" src="main.html" name="rightFrame" id="rightFrame">  
+		<iframe  width="100%" height="600"  border="0" frameborder="0" src="main.html" name="rightFrame" id="rightFrame">  
 		</iframe> 
 	</div>
 </div>

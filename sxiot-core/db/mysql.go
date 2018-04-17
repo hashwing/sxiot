@@ -58,15 +58,15 @@ type PersonDevice struct {
 }
 
 type Message struct {
-	ID      int       `xorm:"meaasge_id" json:"message_id"`
-	UserID    int       `xorm:"user_id" json:"user_id"`
+	ID      string       `xorm:"meaasge_id" json:"message_id"`
+	UserID    string       `xorm:"user_id" json:"user_id"`
 	Title   string    `xorm:"message_title" json:"message_title"`
 	Content string    `xorm:"message_content" json:"massage_content"`
 	Created time.Time `xorm:"created" json:"created"`
 }
 
 type News struct {
-	ID      int       `xorm:"news_id" json:"news_id"`
+	ID      string       `xorm:"news_id" json:"news_id"`
 	Title   string    `xorm:"news_title" json:"news_title"`
 	Content string    `xorm:"news_content" json:"news_content"`
 	Created time.Time `xorm:"created" json:"created"`

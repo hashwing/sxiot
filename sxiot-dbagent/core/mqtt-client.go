@@ -1,39 +1,29 @@
 package core
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 	"github.com/astaxie/beego/logs"
 	"github.com/eclipse/paho.mqtt.golang"
+	"github.com/satori/go.uuid"
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/hashwing/sxiot/sxiot-core/config"
+	"github.com/hashwing/sxiot/sxiot-core/etcd"
 )
 
 var endpoint client.Client
 var batchpoint client.BatchPoints
 
-type DBData struct{
-	GatewayID string `json:"gateway_id"`
-	DeviceID string `json:"device_id"`
-	Data interface{} `json:"data"`
-}
 
-var f mqtt.MessageHandler = func(cli mqtt.Client, msg mqtt.Message) {
-	dbData :=&DBData{}
-	err:=json.Unmarshal(msg.Payload(),dbData)
-	if err!=nil{
-		logs.Error(err)
-		return
-	}
+var f mqtt.MessageHandler = func(cli mqtt.Client, msg mqtt.Message) {	
 	if endpoint != nil {
 		tag := map[string]string{
-			"client_id":dbData.DeviceID,
+			"__name__ ":msg.Topic(),
 		}
 		field := map[string]interface{}{
-			"data":dbData.Data,
+			"f64":msg.Payload(),
 		}
-		metric, err:= client.NewPoint(dbData.GatewayID, tag, field, time.Now())
+		metric, err:= client.NewPoint("_", tag, field, time.Now())
 		if err!=nil{
 			logs.Error(err)
 			return
@@ -68,19 +58,57 @@ func NewMQClient()error{
 	if err!=nil{
 		return err
 	}
-	opts :=mqtt.NewClientOptions().AddBroker(config.CommonConfig.DBAgent.MqttURL).SetClientID(config.CommonConfig.DBAgent.ClientID)
+	go CountTimer()
+	
+	opts :=mqtt.NewClientOptions()
+	opts.AddBroker(config.CommonConfig.MQTT.MqttURL)
+	opts.SetClientID("agent_"+uuid.NewV4().String())
 	opts.SetKeepAlive(10 * time.Second)
 	opts.SetDefaultPublishHandler(f)
 	opts.SetPingTimeout(9 * time.Second)
 	opts.SetAutoReconnect(true)
+	opts.SetUsername(config.CommonConfig.MQTT.CUser)
+	opts.SetPassword(config.CommonConfig.MQTT.CPassword)
+	logs.Debug(config.CommonConfig.MQTT.CUser)
+
 	c := mqtt.NewClient(opts)
 	if token := c.Connect(); token.Wait() && token.Error() != nil {
 		return token.Error()
 	}
-	if token := c.Subscribe(config.CommonConfig.DBAgent.Topic, 0, nil); token.Wait() && token.Error() != nil {
-		fmt.Println(token.Error())
-		return token.Error()
+	ec,err:=etcd.NewEtcd()
+	if err!=nil{
+		return err
 	}
 
+	go func(){
+		err:=ec.WatchDataDevice(func(k string,p bool){
+			logs.Info(k,true)
+			if p{
+				if token := c.Subscribe(k, 0, nil); token.Wait() && token.Error() != nil {
+					logs.Error(token.Error())
+				}
+			}else{
+				if token := c.Unsubscribe(k); token.Wait() && token.Error() != nil {
+					logs.Error(token.Error())
+				}
+			}
+			
+		})
+		if err!=nil{
+			logs.Error(err)
+			panic(err)
+		}
+	}()
+
+	topics,err:=ec.GetDataDevice()
+	if err!=nil{
+		return err
+	}
+	for _,t:=range topics{
+		if token := c.Subscribe(t, 0, nil); token.Wait() && token.Error() != nil {
+			fmt.Println(token.Error())
+			return token.Error()
+		}
+	}
 	return nil
 }

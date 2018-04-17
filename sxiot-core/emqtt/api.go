@@ -1,6 +1,7 @@
 package emqtt
 
 import (
+	"strings"
 	"io"
 	"net/http"
     "io/ioutil"
@@ -30,7 +31,7 @@ func BasicAuth(method, uri string, body io.Reader) ([]byte,error) {
 
 func GetSubsByClinetID(id string)([]*db.Device,error){
     devices :=make([]*db.Device,0)
-    data,err:=BasicAuth("GET","/api/v2/subscriptions/"+id,nil)
+    data,err:=BasicAuth("GET","/api/v2/subscriptions/device_"+id,nil)
 	if err!=nil{
 		return nil,err
     }
@@ -55,7 +56,7 @@ func GetSubsByClinetID(id string)([]*db.Device,error){
 }
 
 func GetClientStatus(id string)(bool,error){
-    data,err:=BasicAuth("GET","/api/v2/clients/"+id,nil)
+    data,err:=BasicAuth("GET","/api/v2/clients/device_"+id,nil)
 	if err!=nil{
 		return false,err
     }
@@ -65,3 +66,55 @@ func GetClientStatus(id string)(bool,error){
     return true,nil
 }
 
+func GetNodes()(*ClusterNodes,error){
+    data,err:=BasicAuth("GET","/api/v2/monitoring/nodes",nil)
+    if err!=nil{
+		return nil,err
+    }
+    var res ClusterNodes
+    err=json.Unmarshal(data,&res)
+    return &res,err
+}
+
+func CountDevice()(int64,int64,error){
+    data,err:=BasicAuth("GET","/api/v2/monitoring/nodes",nil)
+    if err!=nil{
+		return 0,0,err
+    }
+    var res ClusterNodes
+    err=json.Unmarshal(data,&res)
+    if err!=nil{
+		return 0,0,err
+    }
+    var DeviceSum int64 = 0
+    var UserSum    int64 = 0
+    for _,v:=range res.Result{
+        clientsbyte,err:=BasicAuth("GET","/api/v2/nodes/"+v.Name+"/clients",nil)
+        if err!=nil{
+            return 0,0,err
+        }
+        var clients Clients
+        err=json.Unmarshal(clientsbyte,&clients)
+        if err!=nil{
+		    return 0,0,err
+        }
+        for _,c:=range clients.Result.Objects{
+            if strings.HasPrefix(c.ID,"device_"){
+                DeviceSum++
+            }
+            if strings.HasPrefix(c.ID,"app_"){
+                UserSum++
+            }
+        }
+        
+    }
+    return DeviceSum,UserSum,err
+}
+
+func GetCluters()([]byte,error){
+    return BasicAuth("GET","/api/v2/management/nodes",nil)
+}
+
+func GetSessions()([]byte,error){
+    return BasicAuth("GET","/api/v2/monitoring/nodes",nil)
+}

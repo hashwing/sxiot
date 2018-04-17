@@ -31,3 +31,8 @@ func DelGateway(gatewayID string)error{
 	_,err:=MysqlDB.Table("sxiot_gateway").Where("gateway_id=?",gatewayID).Delete(gateway)
 	return err
 }
+
+func CountGateway()(int64,error){
+	gateway := new(DeviceGateway)
+	return MysqlDB.Table("sxiot_gateway").Count(gateway)
+}

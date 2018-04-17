@@ -6,6 +6,7 @@ import (
 	"github.com/satori/go.uuid"
 	"github.com/gorilla/context"
 	"github.com/hashwing/sxiot/sxiot-core/db"
+	"github.com/hashwing/sxiot/sxiot-core/etcd"
 )
 func CreateDevice(w http.ResponseWriter, r *http.Request) {
 	brandID :=r.FormValue("brand_id")
@@ -29,6 +30,14 @@ func CreateDevice(w http.ResponseWriter, r *http.Request) {
 		logs.Error(err)
 		w.WriteHeader(500)
 		return
+	}
+	ec,err:=etcd.NewEtcd()
+	if err!=nil{
+		logs.Error(err)
+	}
+	err=ec.PutDataDevice(id)
+	if err!=nil{
+		logs.Error(err)
 	}
 	w.WriteHeader(204)
 }
@@ -94,6 +103,14 @@ func DelDevice(w http.ResponseWriter, r *http.Request){
 	if err!=nil{
 		w.WriteHeader(500)
 		return
+	}
+	ec,err:=etcd.NewEtcd()
+	if err!=nil{
+		logs.Error(err)
+	}
+	err=ec.DeleteDataDevice(id)
+	if err!=nil{
+		logs.Error(err)
 	}
 	w.WriteHeader(204)
 }

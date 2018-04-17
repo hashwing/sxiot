@@ -1,7 +1,7 @@
 package db
 
 func AddPersonDevice( device *PersonDevice)error{
-	res,err:=MysqlDB.Table("sxiot_user_device").Where("device_id=?",device.DeviceID).Get(&device)
+	res,err:=MysqlDB.Table("sxiot_user_device").Where("device_id=?",device.DeviceID).Get(device)
 	if res{
 		return nil
 	}
@@ -16,7 +16,7 @@ func FindPersonDevices(userID string)([]PersonDevice,error){
 }
 
 func UpdatePersonDevice(device *PersonDevice)error{
-	_,err:=MysqlDB.Table("sxiot_user_device").Where("device_id=?",device.ID).Update(&device)
+	_,err:=MysqlDB.Table("sxiot_user_device").Where("id=?",device.ID).Update(device)
 	return err
 }
 

@@ -20,7 +20,14 @@ type Mysql struct {
 }
 
 type Emqtt struct {
-	URL  	 string `ini:"emq_url"`
-	User 	 string `ini:"emq_user"`
-	Password string `ini:"emq_passwd"`
+	URL  	 	string 	`ini:"emq_url"`
+	MqttURL 	string 	`ini:"mqtt_url"`
+	User 	 	string 	`ini:"emq_user"`
+	Password 	string 	`ini:"emq_passwd"`
+	CUser		string	`ini:"mqtt_username"`
+	CPassword	string	`ini:"mqtt_password"`
+}
+
+type Etcd struct {
+	URL  	 []string `ini:"url"`
 }

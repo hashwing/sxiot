@@ -10,6 +10,7 @@ import (
 	"github.com/hashwing/sxiot/sxiot-core/config"
 	"github.com/hashwing/sxiot/sxiot-core/common"
 	"github.com/hashwing/sxiot/sxiot-core/db"
+	"github.com/hashwing/sxiot/sxiot-core/etcd"
 )
 
 func run(){
@@ -19,6 +20,16 @@ func run(){
 	}
 	config.SetLogConfig(config.UAPI_LOG_PATH)
 	err=db.NewDB()
+	if err!=nil{
+		logs.Error(err)
+		panic(err)
+	}
+	ec,err:=etcd.NewEtcd()
+	if err!=nil{
+		logs.Error(err)
+		panic(err)
+	}
+	err=ec.PutDataDevices()
 	if err!=nil{
 		logs.Error(err)
 		panic(err)

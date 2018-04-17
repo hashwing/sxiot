@@ -26,3 +26,8 @@ func AddUser(user *PersonUser)error{
 	_,err:=MysqlDB.Table("sxiot_user").Insert(user)
 	return err
 }
+
+func CountUser()(int64,error){
+	user := new(PersonUser)
+	return MysqlDB.Table("sxiot_user").Count(user)
+}

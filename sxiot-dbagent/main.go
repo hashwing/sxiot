@@ -19,7 +19,12 @@ func run(){
 		logs.Error(err)
 		panic(err)
 	}
-	core.NewMQClient()
+	err=core.NewMQClient()
+	if err != nil {
+		logs.Error(err)
+		panic(err)
+	}
+	logs.Info("start working")
 }
 
 func main(){

@@ -11,12 +11,12 @@ import (
 var CommonConfig = &SxiotConfig{}
 
 type SxiotConfig struct {
-	DBAgent DBAgentService `ini:"dbagent"`
-	Influxdb Influxdb `ini:"influxdb"`
-	Mysql Mysql `ini:"mysql"`
-	Platform PlatformConfig `ini:"platform"`
-	Monitor Monitor `ini:"monitor"`
-	MQTT Emqtt `ini:"emqtt"`
+	Influxdb 	Influxdb 		`ini:"influxdb"`
+	Mysql 		Mysql 			`ini:"mysql"`
+	Platform 	PlatformConfig 	`ini:"platform"`
+	Monitor 	Monitor 		`ini:"monitor"`
+	MQTT 		Emqtt 			`ini:"emqtt"`
+	Etcd		Etcd			`ini:"etcd"`
 }
 
 func NewCommonConfig() error {

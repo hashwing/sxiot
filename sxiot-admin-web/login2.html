@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="css/zui.css">
+  <link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+
+  <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+  <script type="text/javascript" src="lib/jquery/jquery.cookie.js"></script>
+  <script type="text/javascript" src="js/zui.js"></script>
+  <style>
+  body{
+    background:url('img/data.jpg') no-repeat;
+    background-size: cover;
+  }
+  /* login  */
+
+.page-login {
+    padding: 100px;
+    opacity:0.8;
+    
+}
+
+.page-login .panel {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.page-login .panel-body {
+    padding: 50px 40px 40px;
+}
+
+.page-login .logo {
+    font-size: 20px;
+    text-align: center;
+}
+
+.page-login .logo img {
+    width: 36px;
+    height: 36px;
+}
+
+.page-login .logo a {
+    text-decoration: none;
+    margin-top: 8px;
+    font-size: 28px;
+    color: #37474f;
+    text-shadow: rgba(0, 0, 0, .15) 0 0 1px;
+}
+
+.page-login form {
+    margin-top: 45px;
+    color: #76838f;
+}
+
+.page-login form .form-group {
+    margin: 20px 0 40px 0;
+}
+
+.page-login form .form-control {
+    height: 36px;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.page-login form .btn-lg {
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+@media (min-width: 767px) {
+    .sidebar-toggle {
+        display: none;
+    }
+}
+
+.page-copyright{
+    margin: 0px 300px;
+}
+  </style>
+</head>
+
+
+<body>
+  <div class="page page-login text-center">
+    <div class="panel">
+      <div class="panel-body">
+        <div class="logo">
+          <a href="#">随心物联网云数据中心</a>
+        </div>
+        <form action="#">
+          <div class="form-group">
+            <input type="text" class="form-control" id="account" placeholder="帐号">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control" id="pwd" placeholder="密码">
+          </div>
+          <button type="button" id="commit" class="btn btn-lg btn-info btn-block">登录</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="js/data/login.js"></script>
+</body>
+
+</html>

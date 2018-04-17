@@ -12,6 +12,10 @@ import (
 func NewRouter(root *mux.Router) {
 	apiRoute := root.PathPrefix("/api").Subrouter()
 	apiRoute.HandleFunc("/login", platform.Login)
+	apiRoute.HandleFunc("/mqtt/auth", platform.AuthGateway)
+	apiRoute.HandleFunc("/mqtt/superuser", platform.AuthSuper)
+	apiRoute.HandleFunc("/mqtt/acl", platform.AuthDevice)
+	//
 	userRoute:=apiRoute.PathPrefix("/user").Subrouter()
 	userRoute.Handle("/get", apiHandler(platform.GetCurrentUser))
 	userRoute.Handle("/find", apiHandler(platform.FindUsers))
@@ -35,6 +39,16 @@ func NewRouter(root *mux.Router) {
 	deviceRoute.Handle("/create",  apiHandler(platform.CreateDevice))
 	deviceRoute.Handle("/update",  apiHandler(platform.UpdateDevice))
 	deviceRoute.Handle("/delete",  apiHandler(platform.DelDevice))
+	newsRoute:=apiRoute.PathPrefix("/news").Subrouter()
+	newsRoute.Handle("/find",  apiHandler(platform.FindNews))
+	newsRoute.Handle("/create",  apiHandler(platform.CreateNews))
+	newsRoute.Handle("/delete",  apiHandler(platform.DelNews))
+	//
+	emqRoute:=apiRoute.PathPrefix("/emq").Subrouter()
+	emqRoute.Handle("/cluster",  apiHandler(platform.EmqttCluster))
+	emqRoute.Handle("/client",  apiHandler(platform.EmqttClients))
+	emqRoute.Handle("/count",  apiHandler(platform.DeviceUser))
+	emqRoute.HandleFunc("/web",  platform.EmqttHook)
 	//
 	appRoute:=apiRoute.PathPrefix("/app").Subrouter()
 	appRoute.HandleFunc("/login", app.Login)
@@ -50,6 +64,8 @@ func NewRouter(root *mux.Router) {
 	appSonRoute:=appRoute.PathPrefix("/son").Subrouter()
 	appSonRoute.Handle("/find",  appHandler(app.GetSonDevices))
 	appSonRoute.Handle("/update",  appHandler(app.UpdateSonDevice))
+	appNewsRoute:=appRoute.PathPrefix("/news").Subrouter()
+	appNewsRoute.Handle("/find",  appHandler(app.FindTopNews))
 }
 
 type apiHandler func(http.ResponseWriter, *http.Request)

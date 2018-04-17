@@ -20,6 +20,15 @@ func GetBrand(brandID string)(*DeviceBrand,error){
 	return &brand,err
 }
 
+func GetBrandByB(b string)(*DeviceBrand,error){
+	var brand DeviceBrand
+	res,err:=MysqlDB.Table("sxiot_brand").Where("brand_type=?",b).Get(&brand)
+	if !res{
+		return nil,nil
+	}
+	return &brand,err
+}
+
 
 func UpdateBrand(brand *DeviceBrand)error{
 	_,err:=MysqlDB.Table("sxiot_brand").Where("brand_id=?",brand.ID).Update(brand)
