@@ -15,6 +15,13 @@ func FindPersonDevices(userID string)([]PersonDevice,error){
 	return devcies,err
 }
 
+// AuthPersonDevice auth device
+func AuthPersonDevice(id,gatewayID string)(bool){
+	var device PersonDevice
+	res,_:=MysqlDB.Table("sxiot_user_device").Where("gateway_id=? and id=?",gatewayID,id).Get(&device)
+	return res
+}
+
 func UpdatePersonDevice(device *PersonDevice)error{
 	_,err:=MysqlDB.Table("sxiot_user_device").Where("id=?",device.ID).Update(device)
 	return err

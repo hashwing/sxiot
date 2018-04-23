@@ -1,0 +1,98 @@
+---
+
+- name: Install influxdb
+  yum: name=influxdb state=latest update_cache=yes
+
+- name: Start influxdb
+  service: name=influxdb enabled=true state=restarted
+
+- wait_for: port=8086 delay=2
+
+- name: Create influxdb db
+  shell: influx -execute 'create database sxiot'
+
+- name: Install prometheus
+  yum: name=prometheus state=latest update_cache=yes
+
+- name: Config prometheus
+  template: src=prometheus.yml dest=/usr/local/share/prometheus/prometheus.yml
+
+- name: Start prometheus
+  service: name=prometheus enabled=true state=restarted
+
+- name: Uninstall MariaDB-server
+  yum: name=mariadb-server state=removed
+
+- name: Delete original mysql directory
+  file: path=/var/lib/mysql state=absent
+
+- name: Delete original cnf.d directory
+  file: path=/etc/my.cnf.d state=absent
+
+- name: Install mariadb-server
+  yum: name=mariadb-server state=latest update_cache=yes
+
+
+- name: Install mariadb
+  yum: name=mariadb state=latest update_cache=yes
+
+- name: Start mariadb-server
+  service: name=mariadb enabled=true state=restarted
+
+- name: config mariadb user
+  shell: /bin/mysqladmin -u root password 123456
+
+- name: config mariadb db
+  shell: mysqladmin -uroot -p123456 create sxiot
+
+- name: copy sxiot.sql
+  template: src=sxiot.sql dest=/tmp/sxiot.sql
+
+- name: config mariadb table
+  shell: mysql -u root -p123456  sxiot < /tmp/sxiot.sql
+
+- name: Install grafana
+  yum: name=grafana state=latest update_cache=yes
+
+- name: config grafana
+  template: src=grafana.ini dest=/etc/grafana/grafana.ini
+
+- name: mkdir the dashboards config dir
+  file:
+    path: /var/lib/grafana/dashboards
+    state: directory
+    mode: 0755
+
+- name: config zhijidiankong
+  template: src=zhu-ji-jian-kong.json dest=/var/lib/grafana/dashboards/zhu-ji-jian-kong.json
+
+- name: config dongtai
+  template: src=dt.json dest=/var/lib/grafana/dashboards/dong-tai.json
+
+- name: config grafana db
+  shell: curl -i -X POST -H "Content-Type:application/json" http://admin:admin@127.0.0.1:3000/api/datasources -d '{"name":"sxiot","type":"influxdb","url":"http://127.0.0.1:8086","access":"proxy", "basicAuth":false,"database":"sxiot","isDefault":true}'
+
+- name: Restart grafana
+  service: name=grafana-server enabled=true state=restarted
+
+- name: Install sxiot-uapi
+  yum: name=sxiot-uapi state=latest update_cache=yes
+  notify:
+    - restart sxiot-uapi
+  tags:
+    - update
+
+- name: Restart sxiot-uapi
+  service: name=sxiot-uapi enabled=true state=restarted
+
+- name: Install name=sxiot-admin-web
+  yum: name=sxiot-admin-web state=latest update_cache=yes
+
+- name: Install nginx
+  yum: name=nginx state=latest update_cache=yes
+
+- name: config nginx
+  template: src=nginx.conf dest=/etc/nginx/nginx.conf
+
+- name: Restart nginx
+  service: name=nginx enabled=true state=restarted

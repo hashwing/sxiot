@@ -28,7 +28,7 @@
 					<th>网关ID</th>
 					<th width="300" class="text-center">网关名称</th>
 					<th width="300" class="text-center">二维码</th>
-					<th width="140" class="text-center">操作</th>
+					<th width="200" class="text-center">操作</th>
 				</tr>
 			</thead>
 			<tbody id="gateway-list">
@@ -60,6 +60,38 @@
 			  </div>
 			</div>
 		</div>
+
+		
+		<div class="modal fade" id="test-modal">
+			<div class="modal-dialog">
+			  <div class="modal-content">
+				<div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+				  <h4 class="modal-title">设备模拟</h4>
+				</div>
+				<div class="modal-body">
+						<table class="table">
+								<thead>
+									<tr>
+										<th>数据点</th>
+										<th>数据</th>
+									</tr>
+								</thead>
+								<tbody id="test-content">
+									
+								</tbody>
+						</table>
+				</div>
+				<div class="modal-footer">
+				  <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				  <button type="button" class="btn btn-primary" id="add-data">添加数据点</button>
+				</div>
+			  </div>
+			</div>
+		</div>
+
+	
+		<script type="text/javascript" src="js/mqtt.js"></script>
 		<script type="text/javascript" src="js/common.js"></script>
 		<script type="text/javascript" src="js/data/gateway.js"></script>
 </body>

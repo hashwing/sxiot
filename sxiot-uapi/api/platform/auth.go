@@ -59,10 +59,20 @@ func AuthDevice(w http.ResponseWriter, r *http.Request){
 		w.WriteHeader(401)
 		return
 	}
+	if strings.HasPrefix(clientID,"app_"){
+		res:=db.AuthPersonDevice(topic,username)
+		if !res{
+			w.WriteHeader(401)
+			return
+		}
+		w.WriteHeader(200)
+		return
+	}
 	res:=db.AuthDevice(topic,username)
 	if !res{
 		w.WriteHeader(401)
 		return
 	}
+	
 	w.WriteHeader(200)
 }

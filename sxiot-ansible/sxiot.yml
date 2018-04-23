@@ -1,0 +1,48 @@
+# python -m SimpleHTTPServer 8000
+- name: common config
+  hosts: all
+
+  tasks:
+  - name: Disable selinux
+    selinux:
+      state: disabled
+
+  - name: Disable temp selinux
+    shell: setenforce 0
+    ignore_errors: yes
+
+  - name: mkdir the common config dir
+    file:
+      path: /etc/sxiot
+      state: directory
+      mode: 0755
+
+  - name: write the common config file
+    template: src=templates/sxiot.conf.j2 dest=/etc/sxiot/sxiot.conf
+
+  - name: clean repo
+    shell: rm -rf /etc/yum.repos.d/*
+
+  - name: write the repo file
+    template: src=templates/sxiot.repo.j2 dest=/etc/yum.repos.d/sxiot.repo
+
+  - name: clean all
+    shell: yum clean all
+
+  - name: makecache
+    shell: yum makecache
+
+- name: emq setup
+  hosts: emq
+  gather_facts: no
+
+  roles:
+    - role: emq
+      uapi_ip: 127.0.0.1
+
+- name: sxiot-uapi setup
+  hosts: uapi
+  gather_facts: no
+
+  roles:
+    - role: sxiot-uapi

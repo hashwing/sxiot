@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>后台管理</title>
+    <link rel="stylesheet" type="text/css" href="css/zui.css">
+    <link rel="stylesheet" type="text/css" href="css/theme/zui-theme-green.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+
+    <script type="text/javascript" src="lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="lib/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="js/zui.js"></script>
+    <style>
+        body {
+            margin-left: 0px;
+            margin-top: 0px;
+            margin-right: 0px;
+            margin-bottom: 0px;
+            overflow: hidden;
+            background-color: #141414
+        }
+    </style>
+    <script>
+        function changeFrameHeight() {
+            var ifm = document.getElementById("mainiframe");
+            ifm.height = document.documentElement.clientHeight;
+        }
+        window.onresize = function () { changeFrameHeight(); }
+        $(function () { changeFrameHeight(); });
+    </script>
+</head>
+
+<body>
+    <!--nav-->
+    <header class="header">
+        <div class="header-left">
+            <div class="sidebar-toggle">
+                <i class="icon icon-bars"></i>
+            </div>
+            <div class="logo">
+                <span class="text-primary">随心物联网云数据中心</span>
+            </div>
+        </div>
+        <div class="header-user">
+            <div class="item dropdown">
+                <span data-toggle="dropdown">
+                    <i class="icon icon-tasks"></i>
+                    <span>数据视图列表</span>
+                    <span class="caret"></span>
+                </span>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="javascript:logout();">注销</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="header-user">
+                <div class="item dropdown">
+                    <span data-toggle="dropdown">
+                        <i class="icon icon-user"></i>
+                        <span id="user-alias">游客</span>
+                        <span class="caret"></span>
+                    </span>
+                    <ul class="dropdown-menu pull-right">
+                        <li>
+                            <a href="javascript:logout();">注销</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+    </header>
+
+    <div style="padding-top:10px">
+        <iframe id="mainiframe" width="100%" height="600" src="./grafana/dashboard/db/new-dashboard-copytest?refresh=10s&orgId=1"
+            frameborder="0" scrolling="auto"></iframe>
+    </div>
+    </div>
+    <script type="text/javascript" src="js/admin.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/data/login-user.js"></script>
+    <script>
+        if ($.cookie("Auth") == "") {
+            //$(location).attr("href","login.html")
+        }
+        function logout() {
+            $.cookie("Auth", "", { path: '/' })
+            $.cookie("Auth", "")
+            $(location).attr("href", "login.html")
+        }
+    </script>
+</body>
+
+</html>

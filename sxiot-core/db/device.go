@@ -14,7 +14,7 @@ func FindDevices(adminID string)([]Device,error){
 func FindDevicesByB(b string)([]Device,error){
 	var devcies []Device
 	DBrand,err:=GetBrandByB(b)
-	if err!=nil{
+	if err!=nil||DBrand==nil{
 		return devcies,err
 	}
 	err = MysqlDB.Table("sxiot_device").Where("brand_id=?",DBrand.ID).Find(&devcies)

@@ -1,0 +1,35 @@
+---
+- name: Install etcd
+  yum: name=etcd state=latest update_cache=yes
+
+- name: Restart etcd
+  service: name=etcd enabled=true state=restarted
+
+- name: Install EMQ
+  yum: name=emqttd state=latest update_cache=yes
+
+- name: config EMQ
+  template: src=emq.conf.j2 dest=/etc/emqttd/emq.conf
+
+- name: config EMQ auth_api
+  template: src=emq_auth_http.conf.j2 dest=/etc/emqttd/plugins/emq_auth_http.conf
+
+- name: Restart EMQ
+  service: name=emqttd enabled=true state=started
+
+- wait_for: port=8083 delay=5
+
+- name: load emw_auth_http
+  shell: emqttd_ctl plugins load emq_auth_http
+
+- name: Install sxiot-dbagent
+  yum: name=sxiot-dbagent state=latest update_cache=yes
+
+- name: Restart sxiot-dbagent
+  service: name=sxiot-dbagent enabled=true state=restarted
+
+- name: Install sxiot-monitor
+  yum: name=sxiot-monitor state=latest update_cache=yes
+
+- name: Restart sxiot-monitor
+  service: name=sxiot-monitor enabled=true state=restarted

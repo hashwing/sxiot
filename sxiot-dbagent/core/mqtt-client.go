@@ -18,11 +18,13 @@ var batchpoint client.BatchPoints
 var f mqtt.MessageHandler = func(cli mqtt.Client, msg mqtt.Message) {	
 	if endpoint != nil {
 		tag := map[string]string{
-			"__name__ ":msg.Topic(),
+			"__name__":"device",
+			"device_id":msg.Topic(),
 		}
 		field := map[string]interface{}{
 			"f64":msg.Payload(),
 		}
+		logs.Info(msg.Topic())
 		metric, err:= client.NewPoint("_", tag, field, time.Now())
 		if err!=nil{
 			logs.Error(err)
