@@ -32,6 +32,15 @@
   - name: makecache
     shell: yum makecache
 
+- name: etcd setup
+  hosts: uapi
+  tasks:
+  - name: Install etcd
+    yum: name=etcd state=latest update_cache=yes
+
+  - name: Restart etcd
+    service: name=etcd enabled=true state=restarted
+
 - name: emq setup
   hosts: emq
   gather_facts: no
@@ -43,6 +52,15 @@
 - name: sxiot-uapi setup
   hosts: uapi
   gather_facts: no
+  vars:
+    emq_endpoints: []
+
+  pre_tasks:
+
+    - name: Set emq endpoints
+      set_fact:
+        emq_endpoints: "{{ emq_endpoints }} + ['{{ hostvars[item].ansible_ssh_host }}']"
+      with_items: "{{ groups['emq'] }}"
 
   roles:
     - role: sxiot-uapi

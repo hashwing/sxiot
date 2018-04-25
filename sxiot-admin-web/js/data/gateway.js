@@ -131,9 +131,9 @@ function onConnectionLost(responseObject) {
 function onMessageArrived(message) {
   console.log("onMessageArrived:"+message.payloadString);
   if (message.payloadString=="update"){
-    var message = new Paho.MQTT.Message( $("#val-"+DeviceType[message.destinationName]).val());
-    message.destinationName = $('#piont-'+DeviceType[message.destinationName]).val();
-    client.send(message);
+    var msg = new Paho.MQTT.Message( $("#val-"+DeviceType[message.destinationName]).val());
+    msg.destinationName = $('#piont-'+DeviceType[message.destinationName]).val();
+    client.send(msg);
     return
   }
   $("#val-"+DeviceType[message.destinationName]).val(message.payloadString)

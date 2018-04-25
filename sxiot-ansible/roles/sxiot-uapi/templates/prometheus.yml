@@ -21,7 +21,11 @@ rule_files:
 #
 # Remote write configuration (for Graphite, OpenTSDB, or InfluxDB).
 remote_write:
-  - url: "http://localhost:8086/api/v1/prom/write?u=paul&p=foo&db=sxiot"
+{% for item in emq_endpoints %}
+  - url: "http://{{item}}:8086/api/v1/prom/write?u=paul&p=foo&db=sxiot"
+{% endfor %}
 # # Remote read configuration (for InfluxDB only at the moment).
 remote_read:
-  - url: "http://localhost:8086/api/v1/prom/read?u=paul&p=foo&db=sxiot"
+{% for item in emq_endpoints %}
+  - url: "http://{{item}}:8086/api/v1/prom/read?u=paul&p=foo&db=sxiot"
+{% endfor %}

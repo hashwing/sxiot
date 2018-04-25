@@ -1,9 +1,14 @@
 ---
-- name: Install etcd
-  yum: name=etcd state=latest update_cache=yes
+- name: Install influxdb
+  yum: name=influxdb state=latest update_cache=yes
 
-- name: Restart etcd
-  service: name=etcd enabled=true state=restarted
+- name: Start influxdb
+  service: name=influxdb enabled=true state=restarted
+
+- wait_for: port=8086 delay=2
+
+- name: Create influxdb db
+  shell: influx -execute 'create database sxiot'
 
 - name: Install EMQ
   yum: name=emqttd state=latest update_cache=yes
