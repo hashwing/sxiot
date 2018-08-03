@@ -1,9 +1,12 @@
 package db
 
 func AddPersonDevice( device *PersonDevice)error{
-	res,err:=MysqlDB.Table("sxiot_user_device").Where("device_id=?",device.DeviceID).Get(device)
+	res,err:=MysqlDB.Table("sxiot_user_device").Where("gateway_id=? and user_id=?",device.DeviceID,device.UserID).Exist()
 	if res{
 		return nil
+	}
+	if err!=nil{
+		return err
 	}
 	_,err =MysqlDB.Table("sxiot_user_device").Insert(device)
 	return err
@@ -27,8 +30,8 @@ func UpdatePersonDevice(device *PersonDevice)error{
 	return err
 }
 
-func DelPersonDevice(deviceID string)error{
+func DelPersonDevice(id string)error{
 	device:=new(Device) 
-	_,err:=MysqlDB.Table("sxiot_user_device").Where("device_id=?",deviceID).Delete(device)
+	_,err:=MysqlDB.Table("sxiot_user_device").Where("id=?",id).Delete(device)
 	return err
 }

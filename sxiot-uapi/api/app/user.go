@@ -9,6 +9,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
+	"github.com/astaxie/beego/logs"
 	"github.com/hashwing/sxiot/sxiot-core/config"
 	"github.com/hashwing/sxiot/sxiot-core/db"
 )
@@ -85,4 +86,20 @@ func GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	claims := context.Get(r, "Claims").(*MyCustomClaims)
 	w.Write(JsonMsg(claims))
 	context.Clear(r)
+}
+
+func GetUserInfo(w http.ResponseWriter, r *http.Request){
+	claims := context.Get(r, "Claims").(*MyCustomClaims)
+	if claims.UserID==""{
+		logs.Error("uid is null")
+		w.WriteHeader(500)
+		return
+	}
+	user,err:=db.GetUser(claims.UserID)
+	if err!=nil{
+		logs.Error(err)
+		w.WriteHeader(500)
+		return
+	}
+	w.Write(JsonMsg(user))
 }

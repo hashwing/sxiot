@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"crypto/md5"
 	"encoding/hex"
 	"io"
@@ -23,8 +24,22 @@ func AddUser(user *PersonUser)error{
 	io.WriteString(h, user.UserPassword)
 	passwdMD5 := hex.EncodeToString(h.Sum(nil))
 	user.UserPassword=passwdMD5
-	_,err:=MysqlDB.Table("sxiot_user").Insert(user)
+	has,err:=MysqlDB.Table("sxiot_user").Where("user_account=?",user.UserAccount).Exist()
+	if has {
+		return errors.New("user account is exist")
+	}
+	if err!=nil{
+		return err
+	}
+	_,err=MysqlDB.Table("sxiot_user").Insert(user)
 	return err
+}
+
+// GetUser get user info
+func GetUser(uid string)(*PersonUser,error){
+	var user PersonUser
+	_,err:=MysqlDB.Table("sxiot_user").Where("user_id=?",uid).Get(&user)
+	return &user,err
 }
 
 func CountUser()(int64,error){

@@ -55,6 +55,7 @@ func NewRouter(root *mux.Router) {
 	appRoute.HandleFunc("/son", app.GetSonDevices)
 	appRoute.HandleFunc("/reg", app.AddUser)
 	appRoute.HandleFunc("/template", platform.FindBrands)
+	appRoute.Handle("/user", appHandler(app.GetUserInfo))
 	appDeviceRoute:=appRoute.PathPrefix("/device").Subrouter()
 	appDeviceRoute.Handle("/find",  appHandler(app.FindDevices))
 	appDeviceRoute.Handle("/all",  appHandler(app.GetAllDevices))
