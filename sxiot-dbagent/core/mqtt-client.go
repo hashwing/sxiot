@@ -5,7 +5,7 @@ import (
 	"time"
 	"github.com/astaxie/beego/logs"
 	"github.com/eclipse/paho.mqtt.golang"
-	"github.com/satori/go.uuid"
+	"github.com/hashwing/sxiot/sxiot-core/common"
 	"github.com/influxdata/influxdb/client/v2"
 	"github.com/hashwing/sxiot/sxiot-core/config"
 	"github.com/hashwing/sxiot/sxiot-core/etcd"
@@ -64,7 +64,7 @@ func NewMQClient()error{
 	
 	opts :=mqtt.NewClientOptions()
 	opts.AddBroker(config.CommonConfig.MQTT.MqttURL)
-	opts.SetClientID("agent_"+uuid.NewV4().String())
+	opts.SetClientID("agent_"+common.NewUUID())
 	opts.SetKeepAlive(10 * time.Second)
 	opts.SetDefaultPublishHandler(f)
 	opts.SetPingTimeout(9 * time.Second)

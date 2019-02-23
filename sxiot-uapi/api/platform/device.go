@@ -3,7 +3,7 @@ package platform
 import (
 	"net/http"
 	"github.com/astaxie/beego/logs"
-	"github.com/satori/go.uuid"
+	"github.com/hashwing/sxiot/sxiot-core/common"
 	"github.com/gorilla/context"
 	"github.com/hashwing/sxiot/sxiot-core/db"
 	"github.com/hashwing/sxiot/sxiot-core/etcd"
@@ -17,7 +17,7 @@ func CreateDevice(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	claims := context.Get(r, "Claims").(*MyCustomClaims)
-	id := uuid.NewV4().String()
+	id :=common.NewUUID()
 	device :=&db.Device{
 		ID:id,
 		AdminID:claims.UserID,

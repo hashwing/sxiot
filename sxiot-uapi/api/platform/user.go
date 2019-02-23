@@ -10,7 +10,7 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
-	"github.com/satori/go.uuid"
+	"github.com/hashwing/sxiot/sxiot-core/common"
 	"github.com/hashwing/sxiot/sxiot-core/config"
 	"github.com/hashwing/sxiot/sxiot-core/db"
 	"github.com/astaxie/beego/logs"
@@ -123,7 +123,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		user:=db.AdminUser{
 			UserAccount:account,
 			UserPassword:password,
-			UserID:uuid.NewV4().String(),
+			UserID:common.NewUUID(),
 			UserAlias:name,
 		}
 		err:=db.AddAdmin(&user)

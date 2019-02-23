@@ -3,7 +3,7 @@ package app
 import (
 	"net/http"
 	"github.com/astaxie/beego/logs"
-	"github.com/satori/go.uuid"
+	"github.com/hashwing/sxiot/sxiot-core/common"
 	"github.com/hashwing/sxiot/sxiot-core/db"
 )
 
@@ -15,7 +15,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(400)
 		return
 	}
-	id := uuid.NewV4().String()
+	id := common.NewUUID()
 	user :=&db.PersonUser{
 		UserID:id,
 		UserAccount:account,
