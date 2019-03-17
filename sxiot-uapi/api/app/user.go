@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/astaxie/beego/logs"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/context"
-	"github.com/astaxie/beego/logs"
 	"github.com/hashwing/sxiot/sxiot-core/config"
 	"github.com/hashwing/sxiot/sxiot-core/db"
 )
@@ -24,24 +24,53 @@ func JsonMsg(msg interface{}) []byte {
 }
 
 type MyCustomClaims struct {
-	UserID             string
-	jwt.StandardClaims 
+	UserID string
+	jwt.StandardClaims
 }
 
 //login
 func Login(w http.ResponseWriter, r *http.Request) {
 	account := r.FormValue("account")
 	password := r.FormValue("password")
-	if account == "" || password == "" {
+	code := r.FormValue("code")
+	if code == "" && (account == "" || password == "") {
 		w.WriteHeader(400)
+		w.Write([]byte("请求参数错误"))
 		return
 	}
-	res,user := db.AuthUser(account, password)
-	if !res {
-		w.WriteHeader(400)
-		return
+	var user *db.PersonUser
+	var res bool
+	var err error
+	openID := ""
+	if code != "" {
+		openID, err = getOpenID(code)
+		if err != nil {
+			w.WriteHeader(401)
+			w.Write([]byte("code 验证失败"))
+			return
+		}
 	}
-	expireToken := time.Now().Add(time.Hour * 24*30).Unix()
+	if account == "" {
+		res, user = db.AuthOpenID(openID)
+		if !res {
+			w.WriteHeader(401)
+			w.Write([]byte("用户未注册"))
+			return
+		}
+	} else {
+		res, user = db.AuthUser(account, password)
+		if !res {
+			w.WriteHeader(401)
+			w.Write([]byte("账号密码错误"))
+			return
+		}
+		err = db.UpdateUserOpenID(openID, account)
+		if err != nil {
+			logs.Error(err)
+		}
+	}
+
+	expireToken := time.Now().Add(time.Hour * 24 * 30).Unix()
 	claims := MyCustomClaims{
 		user.UserID,
 		jwt.StandardClaims{
@@ -60,8 +89,8 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 //check token
 func Auth(w http.ResponseWriter, r *http.Request) error {
-	header:=r.Header.Get("Auth")
-	if header==""{
+	header := r.Header.Get("Auth")
+	if header == "" {
 		return errors.New("无权限")
 	}
 	token, err := jwt.ParseWithClaims(header, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
@@ -70,7 +99,7 @@ func Auth(w http.ResponseWriter, r *http.Request) error {
 		}
 		return []byte(config.CommonConfig.Platform.JwtSecret), nil
 	})
-	if err!=nil{
+	if err != nil {
 		return err
 	}
 
@@ -88,15 +117,15 @@ func GetCurrentUser(w http.ResponseWriter, r *http.Request) {
 	context.Clear(r)
 }
 
-func GetUserInfo(w http.ResponseWriter, r *http.Request){
+func GetUserInfo(w http.ResponseWriter, r *http.Request) {
 	claims := context.Get(r, "Claims").(*MyCustomClaims)
-	if claims.UserID==""{
+	if claims.UserID == "" {
 		logs.Error("uid is null")
 		w.WriteHeader(500)
 		return
 	}
-	user,err:=db.GetUser(claims.UserID)
-	if err!=nil{
+	user, err := db.GetUser(claims.UserID)
+	if err != nil {
 		logs.Error(err)
 		w.WriteHeader(500)
 		return

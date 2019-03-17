@@ -12,6 +12,7 @@ INSERT INTO `sxiot_admin` (`admin_id`,`admin_role`, `admin_account`, `admin_pass
 
 create table sxiot_user (
 	`user_id` varchar(40) not null  primary key,
+	`user_openid` varchar(255) null, 
 	`user_account` varchar(32) not null,
 	`user_password` varchar(32) not null,
 	`user_alias` varchar(32) not null,
